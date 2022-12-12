@@ -1,0 +1,1 @@
+export type singleAnswer = {message: string}

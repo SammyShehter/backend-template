@@ -1,0 +1,31 @@
+version: "3"
+services:
+    backend:
+        build:
+            context: "./backend"
+            dockerfile: Dockerfile
+        container_name: backend
+        depends_on:
+            - mongo
+        restart: "always"
+        ports:
+            - "3000:3000"
+        links:
+            - "mongo"
+        env_file:
+            - ".env"
+        volumes:
+            - ./app.log:/usr/src/app/app.log
+            - ./404.log:/usr/src/app/404.log
+            - ./error.log:/usr/src/app/error.log
+    mongo:
+        image: mongo
+        container_name: "mongo-container"
+        environment:
+            - MONGO_INITDB_DATABASE=Users
+            - MONGO_INITDB_ROOT_USERNAME=sammy
+            - MONGO_INITDB_ROOT_PASSWORD=123456
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "27017:27017"
